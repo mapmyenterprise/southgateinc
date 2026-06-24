@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SouthGate Inc. – Ihr digitaler Partner für B2B Lebensmittelgroßhandel. Frisch. Effizient. Nachhaltig." />
+  <title>SouthGate Inc. – Frischer Großhandel. Digital. Zuverlässig.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sg: {
+              green:   '#1E9E5A',
+              dark:    '#0F3D29',
+              cream:   '#FBF7EE',
+              accent:  '#EE6C3A',
+              neutral: '#9AA08C',
+            }
+          },
+          fontFamily: {
+            display: ['"Bricolage Grotesque"', 'sans-serif'],
+            body:    ['"Hanken Grotesk"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      background: #FBF7EE;
+      color: #0F3D29;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Bricolage Grotesque', sans-serif; }
+
+    /* ── Scroll-in animations ───────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal.d1 { transition-delay: .10s; }
+    .reveal.d2 { transition-delay: .20s; }
+    .reveal.d3 { transition-delay: .30s; }
+    .reveal.d4 { transition-delay: .40s; }
+
+    /* ── Navigation ─────────────────────────────────────── */
+    #nav { transition: background .35s ease, box-shadow .35s ease; }
+    #nav.scrolled {
+      background: rgba(255,255,255,0.97) !important;
+      box-shadow: 0 2px 28px rgba(15,61,41,.09);
+      backdrop-filter: blur(8px);
+    }
+    .nav-link { color: rgba(255,255,255,.82); transition: color .2s; font-size:.875rem; font-weight:500; letter-spacing:.02em; text-decoration:none; }
+    .nav-link:hover { color: white; }
+    #nav.scrolled .nav-link { color: #0F3D29; }
+    #nav.scrolled .nav-link:hover { color: #1E9E5A; }
+    .nav-brand { color: white; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.2rem; transition: color .35s; }
+    #nav.scrolled .nav-brand { color: #0F3D29; }
+    #nav .ham-icon { stroke: white; transition: stroke .35s; }
+    #nav.scrolled .ham-icon { stroke: #0F3D29; }
+
+    /* ── Product cards ──────────────────────────────────── */
+    .prod-card {
+      border: 2px solid transparent;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+    }
+    .prod-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 52px rgba(15,61,41,.13);
+      border-color: #1E9E5A;
+    }
+
+    /* ── Contact form ───────────────────────────────────── */
+    .f-input {
+      width: 100%;
+      background: #FBF7EE;
+      border: 1.5px solid rgba(154,160,140,.35);
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-size: .95rem;
+      color: #0F3D29;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .f-input::placeholder { color: #9AA08C; }
+    .f-input:focus {
+      border-color: #EE6C3A;
+      box-shadow: 0 0 0 3px rgba(238,108,58,.16);
+    }
+    textarea.f-input { resize: vertical; min-height: 120px; }
+
+    /* ── SVG pulse animation ────────────────────────────── */
+    @keyframes pulse-node {
+      0%, 100% { opacity: .12; }
+      50%       { opacity: .32; }
+    }
+    .pn1 { animation: pulse-node 2.6s ease-in-out infinite; }
+    .pn2 { animation: pulse-node 2.6s ease-in-out infinite .7s; }
+    .pn3 { animation: pulse-node 2.6s ease-in-out infinite 1.4s; }
+
+    @keyframes float-y {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+    .svg-float { animation: float-y 5.5s ease-in-out infinite; }
+
+    /* ── Mobile menu ────────────────────────────────────── */
+    #mob-menu {
+      display: none;
+      position: fixed; inset: 0; z-index: 90;
+      background: #0F3D29;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+    #mob-menu.open { display: flex; }
+    #mob-menu a {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.65rem; font-weight: 700;
+      color: white; text-decoration: none;
+      transition: color .2s;
+    }
+    #mob-menu a:hover { color: #EE6C3A; }
+    #mob-menu .mob-cta {
+      background: #EE6C3A;
+      padding: .75rem 2.5rem;
+      border-radius: 50px;
+      color: white !important;
+    }
+
+    /* ── Toast ──────────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+      background: #1E9E5A; color: white;
+      padding: .9rem 1.5rem; border-radius: 12px;
+      font-family: 'Hanken Grotesk', sans-serif; font-weight: 500;
+      box-shadow: 0 8px 32px rgba(30,158,90,.3);
+      transform: translateY(140%);
+      transition: transform .4s ease;
+    }
+    #toast.show { transform: translateY(0); }
+
+    /* ── Section tag ────────────────────────────────────── */
+    .stag {
+      display: inline-block;
+      font-size: .72rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: #1E9E5A; margin-bottom: 1rem;
+    }
+    .stag-accent { color: #EE6C3A; }
+  </style>
+</head>
+
+<body class="antialiased">
+
+<!-- ───────────────────────────────────────── NAVIGATION ──── -->
+<nav id="nav" class="fixed top-0 inset-x-0 z-50" style="background:transparent;">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+
+    <!-- Logo (inline SVG + wordmark — works on any background) -->
+    <a href="#" class="flex items-center gap-2.5 flex-shrink-0" style="text-decoration:none;">
+      <svg width="34" height="32" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="4,22 20,4 36,22"  stroke="#EE6C3A" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="4,34 20,16 36,34" stroke="#1E9E5A" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="nav-brand">SouthGate</span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden lg:flex items-center gap-7">
+      <a href="#ueber-uns"        class="nav-link">Über uns</a>
+      <a href="#produkte"         class="nav-link">Produkte</a>
+      <a href="#so-funktionierts" class="nav-link">So funktioniert's</a>
+      <a href="#nachhaltigkeit"   class="nav-link">Nachhaltigkeit</a>
+      <a href="#kontakt"          class="nav-link">Kontakt</a>
+      <a href="#kontakt"
+         style="background:#EE6C3A; color:white; font-weight:600; font-size:.875rem; padding:.625rem 1.375rem; border-radius:50px; text-decoration:none; margin-left:.25rem; transition:opacity .2s, box-shadow .2s;"
+         onmouseover="this.style.opacity='.9'; this.style.boxShadow='0 6px 20px rgba(238,108,58,.4)'"
+         onmouseout="this.style.opacity='1'; this.style.boxShadow='none'">
+        Jetzt anfragen
+      </a>
+    </div>
+
+    <!-- Hamburger -->
+    <button id="ham" class="lg:hidden p-2" aria-label="Menü öffnen" style="background:none;border:none;cursor:pointer;">
+      <svg width="24" height="24" fill="none" stroke-width="2.2" stroke-linecap="round">
+        <line x1="3" y1="6"  x2="21" y2="6"  class="ham-icon"/>
+        <line x1="3" y1="12" x2="21" y2="12" class="ham-icon"/>
+        <line x1="3" y1="18" x2="21" y2="18" class="ham-icon"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div id="mob-menu">
+  <button id="close-mob" style="position:absolute;top:1.25rem;right:1.25rem;background:none;border:none;cursor:pointer;" aria-label="Schließen">
+    <svg width="28" height="28" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+      <line x1="3" y1="3"  x2="25" y2="25"/>
+      <line x1="25" y1="3" x2="3"  y2="25"/>
+    </svg>
+  </button>
+  <a href="#ueber-uns"        onclick="closeMob()">Über uns</a>
+  <a href="#produkte"         onclick="closeMob()">Produkte</a>
+  <a href="#so-funktionierts" onclick="closeMob()">So funktioniert's</a>
+  <a href="#nachhaltigkeit"   onclick="closeMob()">Nachhaltigkeit</a>
+  <a href="#kontakt"          onclick="closeMob()">Kontakt</a>
+  <a href="#kontakt" onclick="closeMob()" class="mob-cta">Jetzt anfragen</a>
+</div>
+
+
+<!-- ─────────────────────────────────────────────── HERO ──── -->
+<section id="hero" style="background:#0F3D29; min-height:100vh;" class="flex items-center pt-16 pb-20 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 w-full">
+    <div class="grid lg:grid-cols-[1fr_480px] gap-12 xl:gap-20 items-center">
+
+      <!-- Text -->
+      <div>
+        <div class="inline-flex items-center gap-2 reveal in"
+             style="background:rgba(30,158,90,.18); border:1px solid rgba(30,158,90,.3); border-radius:50px; padding:.375rem 1rem; margin-bottom:2rem;">
+          <span style="width:.5rem;height:.5rem;background:#1E9E5A;border-radius:50%;display:inline-block;"></span>
+          <span style="color:#1E9E5A; font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;">B2B Lebensmittelgroßhandel · Wien</span>
+        </div>
+
+        <h1 class="reveal in d1"
+            style="font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:clamp(2.6rem,5.5vw,4.25rem); line-height:1.08; color:white; margin-bottom:1.75rem;">
+          Frischer<br/>
+          Großhandel.<br/>
+          <span style="color:#1E9E5A;">Digital.</span><br/>
+          Zuverlässig.
+        </h1>
+
+        <p class="reveal in d2"
+           style="color:#9AA08C; font-size:1.1rem; line-height:1.75; max-width:30rem; margin-bottom:2.5rem;">
+          SouthGate verbindet europäische Lebensmittelbetriebe mit erstklassigen Lieferanten –
+          vollständig digital, mit Echtzeit-Verfügbarkeit und verlässlicher Lieferung durch ganz Europa.
+        </p>
+
+        <div class="reveal in d3" style="display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:2.5rem;">
+          <a href="#produkte"
+             style="display:inline-flex; align-items:center; gap:.5rem; background:#EE6C3A; color:white; font-weight:600; padding:1rem 2rem; border-radius:50px; text-decoration:none; transition:opacity .2s, transform .2s, box-shadow .2s;"
+             onmouseover="this.style.opacity='.9'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 32px rgba(238,108,58,.4)'"
+             onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+            Produkte entdecken
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="10" x2="16" y2="10"/><polyline points="10,5 16,10 10,15"/>
+            </svg>
+          </a>
+          <a href="#ueber-uns"
+             style="display:inline-flex; align-items:center; gap:.5rem; border:2px solid rgba(255,255,255,.5); color:white; font-weight:600; padding:1rem 2rem; border-radius:50px; text-decoration:none; transition:background .2s, border-color .2s, color .2s;"
+             onmouseover="this.style.background='white'; this.style.color='#0F3D29'; this.style.borderColor='white';"
+             onmouseout="this.style.background='transparent'; this.style.color='white'; this.style.borderColor='rgba(255,255,255,.5)';">
+            Mehr erfahren
+          </a>
+        </div>
+
+        <p class="reveal in d4" style="color:rgba(154,160,140,.65); font-size:.85rem; font-style:italic; letter-spacing:.04em;">
+          „Einfach. Effizient. Nachhaltig."
+        </p>
+      </div>
+
+      <!-- Hero SVG — Globe / Supply chain -->
+      <div class="hidden lg:flex justify-center items-center reveal in d2">
+        <div class="svg-float" style="width:100%;">
+          <svg viewBox="0 0 500 480" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+            <!-- Ambient glow -->
+            <circle cx="250" cy="235" r="205" fill="rgba(30,158,90,0.03)"/>
+            <circle cx="250" cy="235" r="162" fill="rgba(30,158,90,0.05)"/>
+
+            <!-- Globe outline -->
+            <circle cx="250" cy="235" r="160" stroke="rgba(30,158,90,0.38)" stroke-width="1.5"/>
+
+            <!-- Latitude rings -->
+            <ellipse cx="250" cy="235" rx="160" ry="54"  stroke="rgba(30,158,90,0.17)" stroke-width="1"/>
+            <ellipse cx="250" cy="235" rx="160" ry="108" stroke="rgba(30,158,90,0.17)" stroke-width="1"/>
+            <line x1="90" y1="235" x2="410" y2="235" stroke="rgba(30,158,90,0.14)" stroke-width="1"/>
+
+            <!-- Longitude meridians -->
+            <path d="M250,75  C330,155 330,315 250,395" stroke="rgba(30,158,90,0.17)" stroke-width="1"/>
+            <path d="M250,75  C170,155 170,315 250,395" stroke="rgba(30,158,90,0.17)" stroke-width="1"/>
+            <path d="M250,75  C405,150 410,318 250,395" stroke="rgba(30,158,90,0.10)" stroke-width="1"/>
+            <path d="M250,75  C95,150 90,318 250,395"  stroke="rgba(30,158,90,0.10)" stroke-width="1"/>
+
+            <!-- Pulse rings on nodes -->
+            <circle cx="158" cy="190" r="22" fill="rgba(238,108,58,.18)" class="pn1"/>
+            <circle cx="260" cy="262" r="22" fill="rgba(30,158,90,.18)"  class="pn2"/>
+            <circle cx="352" cy="205" r="22" fill="rgba(238,108,58,.18)" class="pn3"/>
+
+            <!-- Supply chain nodes -->
+            <circle cx="158" cy="190" r="8" fill="#EE6C3A"/>
+            <circle cx="260" cy="262" r="9" fill="#1E9E5A"/>
+            <circle cx="352" cy="205" r="8" fill="#EE6C3A"/>
+            <circle cx="312" cy="315" r="5.5" fill="#9AA08C" opacity=".72"/>
+            <circle cx="198" cy="315" r="5.5" fill="#9AA08C" opacity=".72"/>
+
+            <!-- Trade routes (dashed) -->
+            <path d="M158,190 Q209,168 260,262" stroke="#EE6C3A" stroke-width="2" stroke-dasharray="7,5" opacity=".72"/>
+            <path d="M260,262 Q306,233 352,205" stroke="#EE6C3A" stroke-width="2" stroke-dasharray="7,5" opacity=".72"/>
+            <path d="M260,262 Q286,288 312,315" stroke="#9AA08C" stroke-width="1.5" stroke-dasharray="5,5" opacity=".52"/>
+            <path d="M158,190 Q178,252 198,315" stroke="#9AA08C" stroke-width="1.5" stroke-dasharray="5,5" opacity=".52"/>
+            <!-- Long arc route -->
+            <path d="M158,190 Q255,128 352,205" stroke="rgba(30,158,90,.22)" stroke-width="1.5" stroke-dasharray="6,6"/>
+
+            <!-- Arrowheads -->
+            <polygon points="256,255 264,265 251,266" fill="#EE6C3A" opacity=".85"/>
+            <polygon points="348,198 356,208 344,210" fill="#EE6C3A" opacity=".85"/>
+
+            <!-- Truck icon -->
+            <g transform="translate(200,160) rotate(18)" opacity=".9">
+              <rect x="0" y="5" width="22" height="13" rx="2.5" fill="#EE6C3A"/>
+              <rect x="16" y="1" width="9"  height="11" rx="2"   fill="#EE6C3A"/>
+              <circle cx="5.5"  cy="19" r="3.5" fill="#0F3D29"/>
+              <circle cx="17.5" cy="19" r="3.5" fill="#0F3D29"/>
+            </g>
+
+            <!-- Leaf accents -->
+            <g transform="translate(435,55) rotate(-22)" opacity=".7">
+              <path d="M0,0 C18,-18 38,-6 32,14 C26,26 6,20 0,0Z" fill="#1E9E5A"/>
+              <line x1="0" y1="0" x2="16" y2="7" stroke="rgba(251,247,238,.38)" stroke-width="1.2"/>
+            </g>
+            <g transform="translate(40,372) rotate(18)" opacity=".5">
+              <path d="M0,0 C18,-18 38,-6 32,14 C26,26 6,20 0,0Z" fill="#9AA08C"/>
+            </g>
+            <g transform="translate(415,372) rotate(8)" opacity=".38">
+              <path d="M0,0 C14,-14 30,-5 25,11 C20,20 4,16 0,0Z" fill="#9AA08C"/>
+            </g>
+
+            <!-- Package/box icon -->
+            <g transform="translate(378,328)" opacity=".42">
+              <rect x="0" y="7" width="28" height="22" rx="3" stroke="#9AA08C" stroke-width="1.5"/>
+              <polyline points="0,14 14,9 28,14" stroke="#9AA08C" stroke-width="1.5" fill="none"/>
+              <line x1="14" y1="7" x2="14" y2="29" stroke="#9AA08C" stroke-width="1"/>
+            </g>
+
+            <!-- Wheat icon -->
+            <g transform="translate(74,102)" opacity=".48">
+              <line x1="11" y1="0" x2="11" y2="30" stroke="#9AA08C" stroke-width="1.5"/>
+              <ellipse cx="11" cy="4"  rx="7" ry="4"   fill="#9AA08C"/>
+              <ellipse cx="4"  cy="12" rx="5.5" ry="2.8" transform="rotate(-35,4,12)"  fill="#9AA08C"/>
+              <ellipse cx="18" cy="12" rx="5.5" ry="2.8" transform="rotate(35,18,12)"  fill="#9AA08C"/>
+              <ellipse cx="3"  cy="20" rx="4.5" ry="2.2" transform="rotate(-42,3,20)"  fill="#9AA08C"/>
+              <ellipse cx="19" cy="20" rx="4.5" ry="2.2" transform="rotate(42,19,20)"  fill="#9AA08C"/>
+            </g>
+
+            <!-- Sparkle dots -->
+            <circle cx="428" cy="158" r="2.5" fill="rgba(251,247,238,.36)"/>
+            <circle cx="88"  cy="158" r="2"   fill="rgba(251,247,238,.28)"/>
+            <circle cx="360" cy="398" r="2"   fill="rgba(251,247,238,.26)"/>
+            <circle cx="170" cy="396" r="2.5" fill="rgba(251,247,238,.30)"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────── ÜBER UNS ──── -->
+<section id="ueber-uns" style="background:#FBF7EE;" class="py-24 lg:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+
+      <!-- Left: text -->
+      <div>
+        <span class="stag reveal">Wer wir sind</span>
+        <h2 class="reveal d1"
+            style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:clamp(2rem,3.8vw,3rem); line-height:1.18; color:#0F3D29; margin-bottom:1.5rem;">
+          Ihr verlässlicher Partner im europäischen Lebensmittelhandel
+        </h2>
+        <p class="reveal d2" style="color:rgba(15,61,41,.68); font-size:1.05rem; line-height:1.8; margin-bottom:1.25rem;">
+          SouthGate Inc. verbindet europäische Lebensmittelbetriebe mit hochwertigen Lieferanten aus aller Welt.
+          Unser vollständig digitales Bestellsystem bietet Echtzeit-Einblick in Lagerbestände,
+          transparente Preise und zuverlässige Lieferung – von Wien aus durch ganz Europa.
+        </p>
+        <p class="reveal d3" style="color:rgba(15,61,41,.68); font-size:1.05rem; line-height:1.8; margin-bottom:2.5rem;">
+          Ob Supermarkt, Gastronomie oder Lebensmittelverarbeitung – wir machen B2B-Großhandel
+          so einfach und effizient wie möglich.
+        </p>
+        <div class="reveal d4" style="display:flex; align-items:center; gap:.75rem;">
+          <div style="width:2.5rem; height:2px; background:#1E9E5A;"></div>
+          <span style="color:#1E9E5A; font-weight:600; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase;">Einfach. Effizient. Nachhaltig.</span>
+        </div>
+      </div>
+
+      <!-- Right: stat cards -->
+      <div style="display:flex; flex-direction:column; gap:1.25rem;">
+        <div class="reveal d1"
+             style="background:#0F3D29; border-radius:16px; padding:1.75rem 2rem; display:flex; align-items:center; gap:1.5rem;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:2.8rem; color:white; flex-shrink:0; line-height:1;">500+</div>
+          <div>
+            <div style="color:white; font-weight:600; font-size:1.05rem; margin-bottom:.25rem;">Produkte im Sortiment</div>
+            <div style="color:#9AA08C; font-size:.875rem;">Frisch, trocken, bio und Spezialitäten</div>
+          </div>
+        </div>
+        <div class="reveal d2"
+             style="background:#0F3D29; border-radius:16px; padding:1.75rem 2rem; display:flex; align-items:center; gap:1.5rem;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:2.8rem; color:white; flex-shrink:0; line-height:1;">12</div>
+          <div>
+            <div style="color:white; font-weight:600; font-size:1.05rem; margin-bottom:.25rem;">Länder in Europa</div>
+            <div style="color:#9AA08C; font-size:.875rem;">Aktive Lieferrouten &amp; Partnernetzwerk</div>
+          </div>
+        </div>
+        <div class="reveal d3"
+             style="background:#0F3D29; border-radius:16px; padding:1.75rem 2rem; display:flex; align-items:center; gap:1.5rem;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:2.8rem; color:white; flex-shrink:0; line-height:1;">98%</div>
+          <div>
+            <div style="color:white; font-weight:600; font-size:1.05rem; margin-bottom:.25rem;">Liefertreue</div>
+            <div style="color:#9AA08C; font-size:.875rem;">Pünktlich und zuverlässig – immer</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────── PRODUKTE ──── -->
+<section id="produkte" style="background:white;" class="py-24 lg:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div style="text-align:center; margin-bottom:4rem;">
+      <span class="stag reveal">Unser Angebot</span>
+      <h2 class="reveal d1"
+          style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:clamp(2rem,3.8vw,3rem); color:#0F3D29; margin-bottom:1.25rem;">
+        Breites Sortiment für jeden Bedarf
+      </h2>
+      <p class="reveal d2" style="color:rgba(15,61,41,.62); font-size:1.05rem; max-width:36rem; margin:0 auto;">
+        Von Frischware bis zu internationalen Spezialitäten –
+        alles aus einer Hand, digital bestellt und schnell geliefert.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Frischware -->
+      <div class="prod-card reveal"
+           style="background:#FBF7EE; border-radius:20px; padding:2rem 1.75rem;">
+        <div style="margin-bottom:1.5rem;">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="24" fill="rgba(238,108,58,0.10)"/>
+            <path d="M26,9 C36,13 40,23 36,33 C32,40 26,43 26,43 C26,43 20,40 16,33 C12,23 16,13 26,9Z"
+                  stroke="#EE6C3A" stroke-width="2" fill="rgba(238,108,58,0.08)" stroke-linejoin="round"/>
+            <line x1="26" y1="43" x2="26" y2="9" stroke="#EE6C3A" stroke-width="1.4" stroke-dasharray="4,3" opacity=".55"/>
+            <path d="M26,25 C33,23 38,20" stroke="#EE6C3A" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M26,31 C33,29 37,26" stroke="#EE6C3A" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M26,25 C19,23 14,20" stroke="#EE6C3A" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M26,31 C19,29 15,26" stroke="#EE6C3A" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.2rem; color:#0F3D29; margin-bottom:.75rem;">Frischware</h3>
+        <p style="color:rgba(15,61,41,.58); font-size:.9rem; line-height:1.65;">
+          Obst, Gemüse und Kräuter – täglich frisch, direkt von zertifizierten Erzeugern.
+        </p>
+      </div>
+
+      <!-- Trockenwaren -->
+      <div class="prod-card reveal d1"
+           style="background:#FBF7EE; border-radius:20px; padding:2rem 1.75rem;">
+        <div style="margin-bottom:1.5rem;">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="24" fill="rgba(238,108,58,0.10)"/>
+            <line x1="26" y1="43" x2="26" y2="10" stroke="#EE6C3A" stroke-width="1.8"/>
+            <ellipse cx="26" cy="13" rx="7.5" ry="4.5" fill="rgba(238,108,58,0.14)" stroke="#EE6C3A" stroke-width="1.8"/>
+            <ellipse cx="17" cy="21" rx="6" ry="3.2" transform="rotate(-38,17,21)" fill="rgba(238,108,58,0.14)" stroke="#EE6C3A" stroke-width="1.6"/>
+            <ellipse cx="35" cy="21" rx="6" ry="3.2" transform="rotate(38,35,21)"  fill="rgba(238,108,58,0.14)" stroke="#EE6C3A" stroke-width="1.6"/>
+            <ellipse cx="16" cy="30" rx="5" ry="2.6" transform="rotate(-44,16,30)" fill="rgba(238,108,58,0.14)" stroke="#EE6C3A" stroke-width="1.6"/>
+            <ellipse cx="36" cy="30" rx="5" ry="2.6" transform="rotate(44,36,30)"  fill="rgba(238,108,58,0.14)" stroke="#EE6C3A" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.2rem; color:#0F3D29; margin-bottom:.75rem;">Trockenwaren</h3>
+        <p style="color:rgba(15,61,41,.58); font-size:.9rem; line-height:1.65;">
+          Getreide, Hülsenfrüchte, Nüsse und mehr – lagerstabil, top Qualität, fair bepreist.
+        </p>
+      </div>
+
+      <!-- Bio-Sortiment -->
+      <div class="prod-card reveal d2"
+           style="background:#FBF7EE; border-radius:20px; padding:2rem 1.75rem;">
+        <div style="margin-bottom:1.5rem;">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="24" fill="rgba(238,108,58,0.10)"/>
+            <circle cx="26" cy="26" r="17" stroke="#EE6C3A" stroke-width="1.4" stroke-dasharray="4,3" opacity=".55"/>
+            <path d="M26,10 C35,14 39,24 35,33 C31,40 26,42 26,42 C26,42 21,40 17,33 C13,24 17,14 26,10Z"
+                  fill="rgba(238,108,58,0.11)" stroke="#EE6C3A" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="26" y1="42" x2="26" y2="10" stroke="#EE6C3A" stroke-width="1.2" opacity=".38"/>
+            <polyline points="20,28 24,32 32,22" stroke="#EE6C3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.2rem; color:#0F3D29; margin-bottom:.75rem;">Bio-Sortiment</h3>
+        <p style="color:rgba(15,61,41,.58); font-size:.9rem; line-height:1.65;">
+          Zertifizierte Bio-Produkte – nachhaltig angebaut, rückverfolgbar und geprüft.
+        </p>
+      </div>
+
+      <!-- Spezialitäten -->
+      <div class="prod-card reveal d3"
+           style="background:#FBF7EE; border-radius:20px; padding:2rem 1.75rem;">
+        <div style="margin-bottom:1.5rem;">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="24" fill="rgba(238,108,58,0.10)"/>
+            <path d="M26,9 L29.6,19.4 L41,19.4 L31.8,25.6 L35.4,36 L26,29.8 L16.6,36 L20.2,25.6 L11,19.4 L22.4,19.4 Z"
+                  fill="rgba(238,108,58,0.12)" stroke="#EE6C3A" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="26" cy="26" r="3.5" fill="#EE6C3A" opacity=".65"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.2rem; color:#0F3D29; margin-bottom:.75rem;">Spezialitäten</h3>
+        <p style="color:rgba(15,61,41,.58); font-size:.9rem; line-height:1.65;">
+          Internationale Delikatessen und regionale Besonderheiten aus ganz Europa.
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:3rem;" class="reveal d2">
+      <a href="#kontakt"
+         style="display:inline-flex; align-items:center; gap:.5rem; background:#0F3D29; color:white; font-weight:600; padding:1rem 2rem; border-radius:50px; text-decoration:none; transition:background .2s, box-shadow .2s;"
+         onmouseover="this.style.background='#1E9E5A'; this.style.boxShadow='0 8px 28px rgba(30,158,90,.35)'"
+         onmouseout="this.style.background='#0F3D29'; this.style.boxShadow='none'">
+        Vollständigen Katalog anfragen
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="10" x2="16" y2="10"/><polyline points="10,5 16,10 10,15"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────── SO FUNKTIONIERT'S ──── -->
+<section id="so-funktionierts" style="background:#0F3D29;" class="py-24 lg:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div style="text-align:center; margin-bottom:4rem;">
+      <span class="stag stag-accent reveal">Unser Prozess</span>
+      <h2 class="reveal d1"
+          style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:clamp(2rem,3.8vw,3rem); color:white; margin-bottom:1.25rem;">
+        So einfach funktioniert's
+      </h2>
+      <p class="reveal d2" style="color:#9AA08C; font-size:1.05rem; max-width:36rem; margin:0 auto;">
+        Von der Bestellung bis zur Lieferung – transparent, digital, zuverlässig.
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div style="position:relative;">
+      <!-- Connecting line (desktop) -->
+      <div class="hidden lg:block"
+           style="position:absolute; top:2.5rem; left:14%; right:14%; height:1px;
+                  background:linear-gradient(to right, rgba(238,108,58,.22), rgba(238,108,58,.55), rgba(238,108,58,.55), rgba(238,108,58,.22));"></div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
+
+        <!-- Step 1 -->
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; z-index:1; display:inline-flex; align-items:center; justify-content:center; width:5rem; height:5rem; border-radius:50%; border:2px solid rgba(238,108,58,.32); background:#0F3D29; margin-bottom:1.5rem;">
+            <span style="font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:1.75rem; color:#EE6C3A;">1</span>
+          </div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.15rem; color:white; margin-bottom:.75rem;">Online bestellen</h3>
+          <p style="color:#9AA08C; font-size:.875rem; line-height:1.7;">
+            Wählen Sie Produkte über unser digitales Portal – jederzeit, überall, von jedem Gerät.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="reveal d1" style="text-align:center;">
+          <div style="position:relative; z-index:1; display:inline-flex; align-items:center; justify-content:center; width:5rem; height:5rem; border-radius:50%; border:2px solid rgba(238,108,58,.32); background:#0F3D29; margin-bottom:1.5rem;">
+            <span style="font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:1.75rem; color:#EE6C3A;">2</span>
+          </div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.15rem; color:white; margin-bottom:.75rem;">Echtzeit-Verfügbarkeit</h3>
+          <p style="color:#9AA08C; font-size:.875rem; line-height:1.7;">
+            Live-Einblick in Lagerbestände und Preise – keine Überraschungen.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="reveal d2" style="text-align:center;">
+          <div style="position:relative; z-index:1; display:inline-flex; align-items:center; justify-content:center; width:5rem; height:5rem; border-radius:50%; border:2px solid rgba(238,108,58,.32); background:#0F3D29; margin-bottom:1.5rem;">
+            <span style="font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:1.75rem; color:#EE6C3A;">3</span>
+          </div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.15rem; color:white; margin-bottom:.75rem;">Kommissionierung</h3>
+          <p style="color:#9AA08C; font-size:.875rem; line-height:1.7;">
+            Sorgfältige Zusammenstellung Ihrer Bestellung durch unser erfahrenes Team.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="reveal d3" style="text-align:center;">
+          <div style="position:relative; z-index:1; display:inline-flex; align-items:center; justify-content:center; width:5rem; height:5rem; border-radius:50%; border:2px solid rgba(238,108,58,.32); background:#0F3D29; margin-bottom:1.5rem;">
+            <span style="font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:1.75rem; color:#EE6C3A;">4</span>
+          </div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.15rem; color:white; margin-bottom:.75rem;">Termingerechte Lieferung</h3>
+          <p style="color:#9AA08C; font-size:.875rem; line-height:1.7;">
+            Pünktlich an Ihr Lager – mit Echtzeit-Tracking und 98 % Liefertreue.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────── NACHHALTIGKEIT ──── -->
+<section id="nachhaltigkeit" style="background:#FBF7EE;" class="py-24 lg:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+
+      <!-- Left: text & bullets -->
+      <div>
+        <span class="stag reveal">Unser Anspruch</span>
+        <h2 class="reveal d1"
+            style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:clamp(2rem,3.8vw,3rem); line-height:1.18; color:#0F3D29; margin-bottom:1.5rem;">
+          Nachhaltig handeln –<br/>heute und morgen
+        </h2>
+        <p class="reveal d2" style="color:rgba(15,61,41,.68); font-size:1.05rem; line-height:1.8; margin-bottom:2.5rem;">
+          Verantwortungsvoller Handel bedeutet für uns, ökologische und soziale Nachhaltigkeit
+          in jede Entscheidung einzubeziehen – von der Lieferantenwahl bis zur letzten Meile.
+        </p>
+        <ul style="display:flex; flex-direction:column; gap:1.5rem;" class="reveal d3">
+          <li style="display:flex; align-items:flex-start; gap:1rem;">
+            <span style="flex-shrink:0; width:1.75rem; height:1.75rem; border-radius:50%; background:rgba(30,158,90,.12); display:inline-flex; align-items:center; justify-content:center; margin-top:.125rem;">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <polyline points="1.5,6.5 5,10 11.5,3.5" stroke="#1E9E5A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div>
+              <div style="font-weight:600; color:#0F3D29; margin-bottom:.2rem;">CO₂-optimierte Lieferrouten</div>
+              <div style="color:rgba(15,61,41,.6); font-size:.9rem; line-height:1.6;">Intelligente Routenplanung minimiert Emissionen bei jedem Transport.</div>
+            </div>
+          </li>
+          <li style="display:flex; align-items:flex-start; gap:1rem;">
+            <span style="flex-shrink:0; width:1.75rem; height:1.75rem; border-radius:50%; background:rgba(30,158,90,.12); display:inline-flex; align-items:center; justify-content:center; margin-top:.125rem;">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <polyline points="1.5,6.5 5,10 11.5,3.5" stroke="#1E9E5A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div>
+              <div style="font-weight:600; color:#0F3D29; margin-bottom:.2rem;">Saisonale &amp; regionale Produkte bevorzugt</div>
+              <div style="color:rgba(15,61,41,.6); font-size:.9rem; line-height:1.6;">Kurze Transportwege, mehr Frische, weniger Umweltbelastung.</div>
+            </div>
+          </li>
+          <li style="display:flex; align-items:flex-start; gap:1rem;">
+            <span style="flex-shrink:0; width:1.75rem; height:1.75rem; border-radius:50%; background:rgba(30,158,90,.12); display:inline-flex; align-items:center; justify-content:center; margin-top:.125rem;">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <polyline points="1.5,6.5 5,10 11.5,3.5" stroke="#1E9E5A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div>
+              <div style="font-weight:600; color:#0F3D29; margin-bottom:.2rem;">Plastikreduzierte Verpackung</div>
+              <div style="color:rgba(15,61,41,.6); font-size:.9rem; line-height:1.6;">Wir reduzieren Kunststoff aktiv und setzen auf recyclingfähige Materialien.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right: Leaf / Globe SVG -->
+      <div class="hidden sm:flex justify-center items-center reveal d1">
+        <div class="svg-float" style="max-width:360px; width:100%;">
+          <svg viewBox="0 0 360 420" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+            <!-- Leaf shape -->
+            <path d="M180,16 C272,50 336,144 318,268 C302,358 226,394 180,398 C134,394 58,358 42,268 C24,144 88,50 180,16Z"
+                  fill="rgba(30,158,90,0.06)" stroke="rgba(30,158,90,0.22)" stroke-width="2"/>
+
+            <!-- Globe inside -->
+            <circle cx="180" cy="228" r="90" stroke="rgba(30,158,90,0.20)" stroke-width="1.5"/>
+            <ellipse cx="180" cy="228" rx="90" ry="30"  stroke="rgba(30,158,90,0.13)" stroke-width="1"/>
+            <ellipse cx="180" cy="228" rx="90" ry="60"  stroke="rgba(30,158,90,0.13)" stroke-width="1"/>
+            <path d="M180,138 C218,172 218,284 180,318" stroke="rgba(30,158,90,0.13)" stroke-width="1"/>
+            <path d="M180,138 C142,172 142,284 180,318" stroke="rgba(30,158,90,0.13)" stroke-width="1"/>
+
+            <!-- Central stem -->
+            <line x1="180" y1="398" x2="180" y2="16" stroke="rgba(30,158,90,0.26)" stroke-width="1.5" stroke-dasharray="6,5"/>
+
+            <!-- Leaf veins -->
+            <path d="M180,210 Q224,202 250,182" stroke="rgba(30,158,90,0.26)" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M180,248 Q222,241 244,222" stroke="rgba(30,158,90,0.26)" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M180,286 Q216,282 234,268" stroke="rgba(30,158,90,0.26)" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M180,210 Q136,202 110,182" stroke="rgba(30,158,90,0.26)" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M180,248 Q138,241 116,222" stroke="rgba(30,158,90,0.26)" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M180,286 Q144,282 126,268" stroke="rgba(30,158,90,0.26)" stroke-width="1.4" stroke-linecap="round"/>
+
+            <!-- CO2 label cloud accent -->
+            <g transform="translate(102,96)" opacity=".65">
+              <ellipse cx="26" cy="18" rx="22" ry="13" fill="rgba(30,158,90,0.10)" stroke="#1E9E5A" stroke-width="1.4"/>
+              <ellipse cx="10" cy="22" rx="12"  ry="8"  fill="rgba(30,158,90,0.10)" stroke="#1E9E5A" stroke-width="1.4"/>
+              <ellipse cx="40" cy="22" rx="14"  ry="9"  fill="rgba(30,158,90,0.10)" stroke="#1E9E5A" stroke-width="1.4"/>
+              <text x="17" y="22" font-family="'Hanken Grotesk',sans-serif" font-size="9.5" font-weight="600" fill="#1E9E5A">CO₂</text>
+            </g>
+
+            <!-- Accent dots -->
+            <circle cx="136" cy="185" r="5"   fill="#1E9E5A" opacity=".52"/>
+            <circle cx="224" cy="185" r="5"   fill="#1E9E5A" opacity=".52"/>
+            <circle cx="124" cy="230" r="4"   fill="#9AA08C" opacity=".60"/>
+            <circle cx="236" cy="230" r="4"   fill="#9AA08C" opacity=".60"/>
+            <circle cx="180" cy="316" r="5.5" fill="#EE6C3A" opacity=".45"/>
+
+            <!-- Small leaf corner accents -->
+            <g transform="translate(30,148) rotate(30)" opacity=".42">
+              <path d="M0,0 C12,-12 24,-4 20,8 C16,16 4,12 0,0Z" fill="#1E9E5A"/>
+            </g>
+            <g transform="translate(300,318) rotate(-20)" opacity=".35">
+              <path d="M0,0 C12,-12 24,-4 20,8 C16,16 4,12 0,0Z" fill="#9AA08C"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────── KONTAKT / CTA BANNER ──── -->
+<section id="kontakt" style="background:#0F3D29;" class="py-24 lg:py-32">
+  <div class="max-w-2xl mx-auto px-6" style="text-align:center;">
+
+    <span class="stag stag-accent reveal">Kontakt aufnehmen</span>
+    <h2 class="reveal d1"
+        style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:clamp(2rem,4vw,3rem); color:white; margin-bottom:1.25rem;">
+      Bereit für modernen Lebensmittelhandel?
+    </h2>
+    <p class="reveal d2" style="color:#9AA08C; font-size:1.05rem; margin-bottom:2.5rem;">
+      Sprechen Sie uns an – unser Team meldet sich innerhalb von 24 Stunden.
+    </p>
+
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:3.5rem;" class="reveal d3">
+      <a href="#kontakt-form"
+         style="display:inline-flex; align-items:center; gap:.5rem; background:#EE6C3A; color:white; font-weight:600; padding:1rem 2rem; border-radius:50px; text-decoration:none; transition:opacity .2s, box-shadow .2s;"
+         onmouseover="this.style.opacity='.9'; this.style.boxShadow='0 10px 28px rgba(238,108,58,.4)'"
+         onmouseout="this.style.opacity='1'; this.style.boxShadow='none'">
+        Jetzt anfragen
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="10" x2="16" y2="10"/><polyline points="10,5 16,10 10,15"/>
+        </svg>
+      </a>
+      <a href="mailto:sales@southgate.com"
+         style="display:inline-flex; align-items:center; gap:.5rem; border:2px solid rgba(255,255,255,.45); color:white; font-weight:600; padding:1rem 2rem; border-radius:50px; text-decoration:none; transition:background .2s, border-color .2s, color .2s;"
+         onmouseover="this.style.background='white'; this.style.color='#0F3D29'; this.style.borderColor='white';"
+         onmouseout="this.style.background='transparent'; this.style.color='white'; this.style.borderColor='rgba(255,255,255,.45)';">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="14" height="10" rx="2"/>
+          <polyline points="2,4 9,10 16,4"/>
+        </svg>
+        sales@southgate.com
+      </a>
+    </div>
+
+    <!-- Contact form -->
+    <div id="kontakt-form" style="text-align:left;" class="reveal d2">
+      <form id="cform" novalidate>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;" class="sm:grid-cols-2">
+          <div style="grid-column: span 1;">
+            <label style="display:block; color:#9AA08C; font-size:.85rem; font-weight:500; margin-bottom:.5rem;" for="sg-name">Ihr Name</label>
+            <input class="f-input" type="text" id="sg-name" name="name" placeholder="Max Mustermann" required />
+          </div>
+          <div style="grid-column: span 1;">
+            <label style="display:block; color:#9AA08C; font-size:.85rem; font-weight:500; margin-bottom:.5rem;" for="sg-company">Unternehmen</label>
+            <input class="f-input" type="text" id="sg-company" name="company" placeholder="Muster GmbH" />
+          </div>
+        </div>
+        <div style="margin-bottom:1rem;">
+          <label style="display:block; color:#9AA08C; font-size:.85rem; font-weight:500; margin-bottom:.5rem;" for="sg-email">E-Mail-Adresse</label>
+          <input class="f-input" type="email" id="sg-email" name="email" placeholder="max@muster.com" required />
+        </div>
+        <div style="margin-bottom:1.5rem;">
+          <label style="display:block; color:#9AA08C; font-size:.85rem; font-weight:500; margin-bottom:.5rem;" for="sg-msg">Ihre Nachricht</label>
+          <textarea class="f-input" id="sg-msg" name="message" placeholder="Erzählen Sie uns von Ihrem Bedarf..." required></textarea>
+        </div>
+        <!-- Honeypot -->
+        <input type="text" name="_hp" style="display:none;" tabindex="-1" autocomplete="off" />
+        <button type="submit"
+                style="width:100%; background:#1E9E5A; color:white; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:1rem; padding:1rem; border-radius:12px; border:none; cursor:pointer; transition:opacity .2s, box-shadow .2s;"
+                onmouseover="this.style.opacity='.9'; this.style.boxShadow='0 8px 28px rgba(30,158,90,.4)'"
+                onmouseout="this.style.opacity='1'; this.style.boxShadow='none'">
+          Nachricht senden
+        </button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────── FOOTER ──── -->
+<footer style="background:#0F3D29; border-top:1px solid rgba(154,160,140,.15);">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10" style="margin-bottom:2.5rem;">
+
+      <!-- Logo + tagline -->
+      <div>
+        <a href="#" style="display:inline-flex; align-items:center; gap:.625rem; text-decoration:none; margin-bottom:1rem;">
+          <svg width="30" height="28" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="4,22 20,4 36,22"  stroke="#EE6C3A" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="4,34 20,16 36,34" stroke="#1E9E5A" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.15rem; color:white;">SouthGate</span>
+        </a>
+        <p style="color:#9AA08C; font-size:.875rem; line-height:1.7;">
+          Einfach. Effizient. Nachhaltig.<br/>
+          B2B Lebensmittelgroßhandel aus Wien.
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div>
+        <h4 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; color:white; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; margin-bottom:1rem;">
+          Rechtliches
+        </h4>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.625rem;">
+          <li><a href="#" style="color:#9AA08C; font-size:.9rem; text-decoration:none; transition:color .2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#9AA08C'">Impressum</a></li>
+          <li><a href="#" style="color:#9AA08C; font-size:.9rem; text-decoration:none; transition:color .2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#9AA08C'">Datenschutz</a></li>
+          <li><a href="#" style="color:#9AA08C; font-size:.9rem; text-decoration:none; transition:color .2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#9AA08C'">AGB</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; color:white; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; margin-bottom:1rem;">
+          Kontakt
+        </h4>
+        <address style="font-style:normal; color:#9AA08C; font-size:.9rem; line-height:1.8;">
+          SouthGate Inc.<br/>
+          Mariahilfer Straße 1<br/>
+          1060 Wien, Österreich<br/>
+          <a href="mailto:sales@southgate.com"
+             style="color:#EE6C3A; text-decoration:none; display:inline-block; margin-top:.25rem; transition:opacity .2s;"
+             onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+            sales@southgate.com
+          </a>
+        </address>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div style="border-top:1px solid rgba(154,160,140,.15); padding-top:1.5rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:.75rem;">
+      <span style="color:#9AA08C; font-size:.8rem;">© 2025 SouthGate Inc. · Alle Rechte vorbehalten</span>
+      <span style="color:rgba(154,160,140,.45); font-size:.8rem; font-style:italic;">Einfach. Effizient. Nachhaltig.</span>
+    </div>
+
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast">✓ &nbsp;Nachricht gesendet! Wir melden uns bald.</div>
+
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Mobile menu
+  const mobMenu = document.getElementById('mob-menu');
+  document.getElementById('ham').addEventListener('click', () => {
+    mobMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('close-mob').addEventListener('click', closeMob);
+  function closeMob() {
+    mobMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Scroll-reveal via IntersectionObserver
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Smooth-scroll with offset for sticky nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      const target = id === '#' ? document.body : document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const top = id === '#' ? 0 : target.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // Contact form – demo submission
+  document.getElementById('cform').addEventListener('submit', e => {
+    e.preventDefault();
+    if (e.target._hp && e.target._hp.value) return; // honeypot
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    e.target.reset();
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  });
+
+  // Mobile grid fix for contact form name/company row
+  const formGrid = document.querySelector('#cform > div:first-child');
+  if (formGrid && window.innerWidth < 640) {
+    formGrid.style.gridTemplateColumns = '1fr';
+  }
+</script>
+
+</body>
+</html>
